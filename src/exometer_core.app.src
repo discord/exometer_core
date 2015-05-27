@@ -8,8 +8,8 @@
    [
     kernel,
     stdlib,
-    lager,
-    setup
+    lager
+    % setup
    ]},
   {included_applications,
    [
