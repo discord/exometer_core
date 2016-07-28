@@ -86,35 +86,15 @@ preset_defaults() ->
 load_defaults() ->
     E = exometer_util:get_env(defaults, []),
     do_load_defaults(env, get_predef(E)),
-    [do_load_defaults(Src, get_predef(D))
-     || {Src,D} <- setup:find_env_vars(exometer_defaults)],
     ok.
 
 load_predefined() ->
     E = exometer_util:get_env(predefined, []),
     do_load_predef(env, get_predef(E)),
-    [do_load_predef(Src, get_predef(P))
-     || {Src, P} <- setup:find_env_vars(exometer_predefined)],
     ok.
 
-register_application(App) ->
-    %% Ignore if exometer is not running
-    case whereis(exometer_admin) of
-        undefined -> ok;
-        _ ->
-            case setup:get_env(App, exometer_defaults) of
-                {ok, E} ->
-                    do_load_defaults(App, get_predef(E));
-                undefined ->
-                    ok
-            end,
-            case setup:get_env(App, exometer_predefined) of
-                {ok, P} ->
-                    do_load_predef(App, get_predef(P));
-                undefined ->
-                    ok
-            end
-    end.
+register_application(_App) ->
+    ok.
 
 get_predef({script, F} ) -> ok(file:script(F, []), F);
 get_predef({consult,F} ) -> ok(file:consult(F), F);
